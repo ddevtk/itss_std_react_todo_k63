@@ -7,7 +7,7 @@
 function TodoItem({ item, func }) {
   return (
     <label className={`panel-block ${item.done ? 'has-text-grey-light' : ''}`} onClick={() => func(item)} >
-      <input type="checkbox" />
+      <input type="checkbox" defaultChecked={item.done} />
       {item.text}
     </label>
   );
