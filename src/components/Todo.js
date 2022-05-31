@@ -19,19 +19,23 @@ import useStorage from '../hooks/storage';
 import { getKey } from '../lib/util';
 
 function Todo() {
-  const [items, putItems] = React.useState([
-    /* テストコード 開始 */
-    { key: getKey(), text: '日本語の宿題', done: false },
-    { key: getKey(), text: 'reactを勉強する', done: false },
-    { key: getKey(), text: '明日の準備をする', done: false },
-    /* テストコード 終了 */
-  ]);
+  // const [items, putItems] = React.useState([
+  //   /* テストコード 開始 */
+  //   { key: getKey(), text: '日本語の宿題', done: false },
+  //   { key: getKey(), text: 'reactを勉強する', done: false },
+  //   { key: getKey(), text: '明日の準備をする', done: false },
+  //   /* テストコード 終了 */
+  // ]);
+
+  const [items, putItems, clearItems] = useStorage()
 
   const [status, setStatus] = useState({
     すべて: true,
     未完了: false,
     完了済み: false,
   });
+
+  console.log(items);
 
   const [input, setInput] = useState('');
 
@@ -63,9 +67,11 @@ function Todo() {
    * @param {*} e
    */
   const submit = (e) => {
-    if (e.key === 'Enter') {
-      putItems([...items, { key: getKey(), text: input.trim(), done: false }]);
-      setInput('');
+    if (input) {
+      if (e.key === 'Enter') {
+        putItems({ key: getKey(), text: input.trim(), done: false });
+        setInput('');
+      }
     }
   };
 
@@ -73,7 +79,7 @@ function Todo() {
     <div className='panel'>
       <div className='panel-heading'>ITSS ToDoアプリ</div>
       <input
-        className='input'
+        className='input is-primary'
         onChange={changeInputHandler}
         value={input}
         onKeyUp={submit}
@@ -82,7 +88,7 @@ function Todo() {
       />
       <Filter status={status} setStatus={setStatus} />
 
-      {items
+      {items.length > 0 && items
         .filter((item) => {
           if (status['完了済み']) {
             return item.done === status['完了済み'];
@@ -104,6 +110,7 @@ function Todo() {
         {status['完了済み'] &&
           `${items.filter((item) => item.done).length} items`}
       </div>
+      <button className='button is-primary is-fullwidth m-2' onClick={clearItems} >全てのToDoを制限する</button>
     </div>
   );
 }

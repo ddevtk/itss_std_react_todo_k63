@@ -7,8 +7,8 @@
 function Filter({ status, setStatus }) {
   return (
     <div className="panel-tabs">
-      {Object.entries(status).map((e) => {
-        return <p className={`text-blue ${e[1] ? 'is-active' : ''}`} onClick={() => {
+      {Object.entries(status).map((e, id) => {
+        return <p key={id} className={`text-blue ${e[1] ? 'is-active' : ''}`} onClick={() => {
           setStatus({ 'すべて': false, '未完了': false, '完了済み': false, [e[0]]: true })
         }} >{e[0]}</p>
       })}
