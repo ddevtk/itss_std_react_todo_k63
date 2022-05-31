@@ -27,6 +27,16 @@ function Todo() {
     /* テストコード 終了 */
   ]);
 
+  const active = (item) => {
+    putItems(items.map(i => {
+      if (i.text === item.text) {
+        return { ...item, done: !item.done }
+      }
+      return i
+    }))
+  }
+
+
   return (
     <div className="panel">
       <div className="panel-heading">
@@ -34,7 +44,7 @@ function Todo() {
       </div>
       {items.map(item => (
         <label className="panel-block">
-          <TodoItem key={item.key} item={item} />
+          <TodoItem key={item.key} func={active} item={item} />
         </label>
       ))}
       <div className="panel-block">
