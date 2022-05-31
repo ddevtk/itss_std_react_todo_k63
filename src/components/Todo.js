@@ -27,6 +27,8 @@ function Todo() {
     /* テストコード 終了 */
   ]);
 
+  const [input, setInput] = useState('')
+
   const active = (item) => {
     putItems(items.map(i => {
       if (i.text === item.text) {
@@ -36,12 +38,28 @@ function Todo() {
     }))
   }
 
+  const changeInputHandler = (e) => {
+    setInput(e.target.value)
+  }
+
+  const submit = (e) => {
+    console.log(e)
+    console.log(e.target.value);
+    if (e.key === 'Enter') {
+      putItems([...items, { key: getKey(), text: input.trim(), done: false }])
+      setInput('')
+    }
+  }
+
+  console.log(items)
+
 
   return (
     <div className="panel">
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
+      <input className='input' onChange={changeInputHandler} value={input} onKeyUp={submit} type="text" placeholder='TODOを入力してください' />
       {items.map(item => (
         <label className="panel-block">
           <TodoItem key={item.key} func={active} item={item} />
